@@ -1,4 +1,5 @@
 (1) Experimental Environment:
+```
 tensorflow>=2.6.0
 tensorflow-estimator>=2.15.0
 h5py>=3.1.0
@@ -28,5 +29,6 @@ python-louvain>=0.16
 geopy>=2.4.1
 fastdtw>=0.3.4
 geographiclib>=2.0
+```
 
 (2) DataSets
