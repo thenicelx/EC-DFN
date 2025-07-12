@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler
 
-def load_grid_coordinates(file_path='data/grid_coordinates.csv'):
+def load_grid_coordinates(file_path='data/Q-traffic Dataset/grid_coordinates.csv'):
     """Loads and processes grid coordinate data."""
     grid_df = pd.read_csv(file_path, sep='\t')
     grid_df['center_lon'] = (grid_df['min_lon'] + grid_df['max_lon']) / 2

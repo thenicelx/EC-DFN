@@ -4,13 +4,13 @@ MAX_TIMESTEPS = 5856
 N_GRIDS_DEFAULT = 564
 
 # --- 更新为新的 geo/ 和 features/ 文件夹路径 ---
-GRID_COORD_PATH = 'data/geo/grid_coordinates.csv'
+GRID_COORD_PATH = 'data/Q-traffic Dataset/grid_coordinates.csv'
 FEATURE_FILES = {
-    'speed': 'data/features/grid_speed_matrix.csv',
-    'start': 'data/features/start_feature_matrix_filtered.csv',
-    'end': 'data/features/end_feature_matrix_filtered.csv',
-    'pm25': 'data.features/pm25_feature_matrix.csv',
-    'aqi': 'data/features/aqi_feature_matrix.csv'
+    'speed': 'data/Q-traffic Events Dataset/grid_speed_matrix.csv',
+    'start': 'data/Q-traffic Events Dataset/start_feature_matrix_filtered.csv',
+    'end': 'data/Q-traffic Events Dataset/end_feature_matrix_filtered.csv',
+    'pm25': 'data/Q-traffic Events Dataset/pm25_feature_matrix.csv',
+    'aqi': 'data/Q-traffic Events Dataset/aqi_feature_matrix.csv'
 }
 # ----------------------------------------------
 
