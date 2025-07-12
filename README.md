@@ -1,4 +1,4 @@
-### (1) Experimental Environment:
+### (1) Experimental Environment
 
 ```
 tensorflow>=2.6.0
@@ -16,11 +16,11 @@ fastdtw>=0.3.4
 ### (2) DataSets
 
 > **"Q-traffic Dataset":**
-
+>
 > This dataset originates from (https://github.com/JingqingZ/BaiduTraffic). In this paper, this dataset integrates multi-modal urban dynamics including: road network topology within geographical bounds [116.10, 39.69,116.71, 40.18], traffic status records from 45,148 road segments (Apr-May 2017), 564 spatial rasters identified through incident frequency analysis, and offline/online auxiliary features sampled at 15-minute intervals.
 
 > **"Q-traffic Events Dataset":**
-
+>
 > Derived from navigation search queries, this dataset captures: crowd-sourced event indicators (564 × 5856 dimensional tensor) and real-time adverse weather annotations.
 
 ### (3) Module Descriptions
