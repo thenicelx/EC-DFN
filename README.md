@@ -39,4 +39,4 @@ geographiclib>=2.0
     analysis, and offline/online auxiliary features sampled at 15-minute intervals.
   
     “features” Derived from navigation search queries, this dataset captures: crowd-sourced event indicators
-    (564 × 5856 dimensional tensor) and real-time adverse weather annotations.
+    (564 × 5856 dimensional tensor) and real-time adverse weather annotations.。
