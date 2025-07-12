@@ -1,4 +1,4 @@
-#(1) Experimental Environment:
+### (1) Experimental Environment:
 
 ```
 tensorflow>=2.6.0
@@ -13,7 +13,7 @@ fastdtw>=0.3.4
 
 ```
 
-# (2) DataSets
+### (2) DataSets
 
 > **"Q-traffic Dataset":**
 
@@ -23,11 +23,11 @@ fastdtw>=0.3.4
 
 > Derived from navigation search queries, this dataset captures: crowd-sourced event indicators (564 × 5856 dimensional tensor) and real-time adverse weather annotations.
 
-# (3) Module Descriptions
+### (3) Module Descriptions
 
-* **"config.py"**:  Centralizes all hyperparameters, file paths, and model configurations for the EC-DFN model, making it convenient for unified modification and parameter tuning.
-* **"data_loader.py"**:  Responsible for all functions related to data loading and preprocessing, including reading data from CSV files, performing data standardization, and creating time-series datasets suitable for model training.
-* **"graph_builder.py"**:  Used for constructing multi-scale graphs.
-* **"model.py"**:  Defines the project's core deep learning model architecture. It not only contains custom Keras layers for spatial feature extraction (such as MultiScaleGCN and CrossScaleGate), but its core lies in the final output layer which integrates a Mixture Density Network (MDN) module. This module can predict the complete probability distribution of traffic flow, thus better capturing data uncertainty.
-* **"metrics.py"**:  Contains the loss function and all metrics used for model evaluation (such as MAE, RMSE, R-squared, etc.).
-* **"train.py"**:  The main entry point script of the project.
+> **"config.py"**:  Centralizes all hyperparameters, file paths, and model configurations for the EC-DFN model, making it convenient for unified modification and parameter tuning.
+> **"data_loader.py"**:  Responsible for all functions related to data loading and preprocessing, including reading data from CSV files, performing data standardization, and creating time-series datasets suitable for model training.
+> **"graph_builder.py"**:  Used for constructing multi-scale graphs.
+> **"model.py"**:  Defines the project's core deep learning model architecture. It not only contains custom Keras layers for spatial feature extraction (such as MultiScaleGCN and CrossScaleGate), but its core lies in the final output layer which integrates a Mixture Density Network (MDN) module. This module can predict the complete probability distribution of traffic flow, thus better capturing data uncertainty.
+> **"metrics.py"**:  Contains the loss function and all metrics used for model evaluation (such as MAE, RMSE, R-squared, etc.).
+> **"train.py"**:  The main entry point script of the project.
