@@ -4,7 +4,6 @@ import numpy as np
 
 
 def combined_loss(y_true, y_pred, k_mixture, mse_weight, mdn_weight):
-    """Combines MDN loss and MSE loss."""
     alpha = y_pred[..., :k_mixture]
     mu = y_pred[..., k_mixture:2 * k_mixture]
     sigma = y_pred[..., 2 * k_mixture:]
@@ -23,6 +22,12 @@ def combined_loss(y_true, y_pred, k_mixture, mse_weight, mdn_weight):
 
     return mse_weight * mse_loss_val + mdn_weight * mdn_loss_val
 
+def get_custom_loss(k_mixture, mse_weight, mdn_weight):
+    def custom_loss(y_true, y_pred):
+        return combined_loss(y_true, y_pred, k_mixture, mse_weight, mdn_weight)
+
+    custom_loss.__name__ = 'custom_combined_loss'
+    return custom_loss
 
 def _get_pred_mean(y_pred, k_mixture):
     alpha = y_pred[..., :k_mixture]

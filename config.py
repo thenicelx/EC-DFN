@@ -1,9 +1,7 @@
 
-# Data parameters
 MAX_TIMESTEPS = 5856
 N_GRIDS_DEFAULT = 564
 
-# --- 更新为新的 geo/ 和 features/ 文件夹路径 ---
 GRID_COORD_PATH = 'data/Q-traffic Dataset/grid_coordinates.csv'
 FEATURE_FILES = {
     'speed': 'data/Q-traffic Events Dataset/grid_speed_matrix.csv',
@@ -12,7 +10,7 @@ FEATURE_FILES = {
     'pm25': 'data/Q-traffic Events Dataset/pm25_feature_matrix.csv',
     'aqi': 'data/Q-traffic Events Dataset/aqi_feature_matrix.csv'
 }
-# ----------------------------------------------
+
 
 # Model parameters
 LOOK_BACK = 6
@@ -27,7 +25,7 @@ ALPHA_MACRO = 0.85
 # Training parameters
 BATCH_SIZE = 64
 EPOCHS = 100
-LEARNING_RATE = 0.0013
+LEARNING_RATE = 0.001
 MSE_WEIGHT = 0.2
 MDN_WEIGHT = 0.8
 TRAIN_SPLIT = 0.8
