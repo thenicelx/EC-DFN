@@ -3,6 +3,15 @@ from tensorflow.keras import backend as K
 import numpy as np
 
 
+def combined_loss(y_true, y_pred, K_mixture=3, mse_weight=0.2, mdn_weight=0.8):
+    alpha, mu, sigma = y_pred[..., :K_mixture], y_pred[..., K_mixture:2 * K_mixture], y_pred[..., 2 * K_mixture:]
+    y_true_reshaped = tf.expand_dims(y_true, -1)
+    prob = tf.exp(-0.5 * tf.square((y_true_reshaped - mu) / sigma)) / (sigma * tf.sqrt(2 * np.pi))
+    mdn_loss_val = -tf.reduce_mean(tf.math.log(tf.reduce_sum(alpha * prob, axis=-1) + K.epsilon()))
+    pred_mean = tf.reduce_sum(alpha * mu, axis=-1)
+    mse_loss_val = tf.reduce_mean(tf.square(pred_mean - y_true))
+    return mse_weight * mse_loss_val + mdn_weight * mdn_loss_val
+    
 def get_custom_loss(k_mixture, mse_weight, mdn_weight):
     def custom_loss(y_true, y_pred):
         return combined_loss(y_true, y_pred, k_mixture, mse_weight, mdn_weight)
