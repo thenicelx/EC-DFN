@@ -1,58 +1,50 @@
 import tensorflow as tf
-from tensorflow.keras import backend as K
 import numpy as np
+from tensorflow.keras import backend as K
+import config
 
 
-def combined_loss(y_true, y_pred, K_mixture=3, mse_weight=0.2, mdn_weight=0.8):
-    alpha, mu, sigma = y_pred[..., :K_mixture], y_pred[..., K_mixture:2 * K_mixture], y_pred[..., 2 * K_mixture:]
+def combined_loss(y_true, y_pred):
+    alpha, mu, sigma = y_pred[..., :config.K_MIXTURE], y_pred[..., config.K_MIXTURE:2 * config.K_MIXTURE], y_pred[...,
+                                                                                                           2 * config.K_MIXTURE:]
     y_true_reshaped = tf.expand_dims(y_true, -1)
+
     prob = tf.exp(-0.5 * tf.square((y_true_reshaped - mu) / sigma)) / (sigma * tf.sqrt(2 * np.pi))
     mdn_loss_val = -tf.reduce_mean(tf.math.log(tf.reduce_sum(alpha * prob, axis=-1) + K.epsilon()))
+
     pred_mean = tf.reduce_sum(alpha * mu, axis=-1)
     mse_loss_val = tf.reduce_mean(tf.square(pred_mean - y_true))
-    return mse_weight * mse_loss_val + mdn_weight * mdn_loss_val
-    
-def get_custom_loss(k_mixture, mse_weight, mdn_weight):
-    def custom_loss(y_true, y_pred):
-        return combined_loss(y_true, y_pred, k_mixture, mse_weight, mdn_weight)
 
-    custom_loss.__name__ = 'custom_combined_loss'
-    return custom_loss
-
-def _get_pred_mean(y_pred, k_mixture):
-    alpha = y_pred[..., :k_mixture]
-    mu = y_pred[..., k_mixture:2 * k_mixture]
-    return tf.reduce_sum(alpha * mu, axis=-1)
+    return config.MSE_WEIGHT * mse_loss_val + config.MDN_WEIGHT * mdn_loss_val
 
 
-def _reshape_true(y_true, pred_mean):
-    y_true_r = tf.reshape(y_true, tf.shape(pred_mean))
-    return tf.cast(y_true_r, pred_mean.dtype)
+def mu_rmse(y_true, y_pred):
+    alpha = y_pred[..., :config.K_MIXTURE]
+    mu = y_pred[..., config.K_MIXTURE:2 * config.K_MIXTURE]
+    pred_mu = K.sum(alpha * mu, axis=-1)
+    return K.sqrt(K.mean(K.square(pred_mu - y_true)))
 
 
-def mu_rmse(y_true, y_pred, k_mixture=3):
-    pred_mean = _get_pred_mean(y_pred, k_mixture)
-    y_true_r = _reshape_true(y_true, pred_mean)
-    return K.sqrt(K.mean(K.square(pred_mean - y_true_r)))
+def mae(y_true, y_pred):
+    alpha = y_pred[..., :config.K_MIXTURE]
+    mu = y_pred[..., config.K_MIXTURE:2 * config.K_MIXTURE]
+    pred_mean = tf.reduce_sum(alpha * mu, axis=-1)
+    return tf.reduce_mean(tf.abs(pred_mean - y_true))
 
 
-def mae(y_true, y_pred, k_mixture=3):
-    pred_mean = _get_pred_mean(y_pred, k_mixture)
-    y_true_r = _reshape_true(y_true, pred_mean)
-    return tf.reduce_mean(tf.abs(pred_mean - y_true_r))
+def r_squared(y_true, y_pred):
+    alpha = y_pred[..., :config.K_MIXTURE]
+    mu = y_pred[..., config.K_MIXTURE:2 * config.K_MIXTURE]
+    pred_mean = tf.reduce_sum(alpha * mu, axis=-1)
+    SS_res = tf.reduce_sum(tf.square(y_true - pred_mean))
+    SS_tot = tf.reduce_sum(tf.square(y_true - tf.reduce_mean(y_true)))
+    return (1 - SS_res / (SS_tot + K.epsilon()))
 
 
-def r_squared(y_true, y_pred, k_mixture=3):
-    pred_mean = _get_pred_mean(y_pred, k_mixture)
-    y_true_r = _reshape_true(y_true, pred_mean)
-    ss_res = tf.reduce_sum(tf.square(y_true_r - pred_mean))
-    ss_tot = tf.reduce_sum(tf.square(y_true_r - tf.reduce_mean(y_true_r)))
-    return (1 - ss_res / (ss_tot + K.epsilon()))
-
-
-def smape(y_true, y_pred, k_mixture=3):
-    pred_mean = _get_pred_mean(y_pred, k_mixture)
-    y_true_r = _reshape_true(y_true, pred_mean)
-    numerator = tf.abs(pred_mean - y_true_r)
-    denominator = tf.abs(y_true_r) + tf.abs(pred_mean)
+def smape(y_true, y_pred):
+    alpha = y_pred[..., :config.K_MIXTURE]
+    mu = y_pred[..., config.K_MIXTURE:2 * config.K_MIXTURE]
+    pred_mean = tf.reduce_sum(alpha * mu, axis=-1)
+    numerator = tf.abs(pred_mean - y_true)
+    denominator = tf.abs(y_true) + tf.abs(pred_mean)
     return tf.reduce_mean(2.0 * numerator / tf.maximum(denominator, K.epsilon())) * 100.0
